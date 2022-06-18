@@ -25,6 +25,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.fa_mehulbhai_c0849394_android.databinding.ActivityMapsBinding;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -39,6 +40,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LocationListener locationListener;
     LocationManager locationManager;
     Marker marker;
+    List<Marker> markerList;
+
+    LatLng myPlace =new LatLng(43.736400,-79.259320);
 
     DatabaseHelperClass databaseHelperClass;
 
@@ -72,9 +76,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         databaseHelperClass = new DatabaseHelperClass(this);
         mMap = googleMap;
 
+        markerList = new ArrayList<>();
+        List<ModelClass> placeList = databaseHelperClass.getAllPlaces();
+
+//        for (ModelClass modelClass : placeList) {
+//            markerList.add(mMap.addMarker(new MarkerOptions()
+//                    .position(new LatLng(Double.parseDouble(modelClass.getPlaceLatitude())
+//                            ,Double.parseDouble(modelClass.getPlaceLongitude()))).title(modelClass.getPlaceName())
+//                    .zIndex( modelClass.getId() ).snippet("By ME")     ));
+//        }
+
+        markerList.add(mMap.addMarker(new MarkerOptions().position(myPlace).title("Scarborough")));
+
+        for (Marker marker1 : markerList) {
+            LatLng latLng =new LatLng(marker1.getPosition().latitude,marker1.getPosition().longitude);
+            mMap.addMarker(new MarkerOptions().position(latLng));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,20));
+        }
+
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
-            public void onMapClick(LatLng latLng) {
+            public void onMapClick(@NonNull LatLng latLng) {
                 MarkerOptions markerOptions = new MarkerOptions().position(latLng);
                 marker = mMap.addMarker(markerOptions);
                 addLocation.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +112,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 });
             }
         });
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(@NonNull Marker marker) {
+                Intent i = new Intent(MapsActivity.this,MarkerClickActivity.class);
+                startActivity(i);
+                return false;
+            }
+        });
     }
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

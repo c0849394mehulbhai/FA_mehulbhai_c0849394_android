@@ -17,6 +17,9 @@
         android:theme="@style/Theme.FA_mehulbhai_c0849394_android"
         tools:targetApi="31">
         <activity
+            android:name=".MarkerClickActivity"
+            android:exported="false" />
+        <activity
             android:name=".FavouritePlaceActivity"
             android:exported="false" />
 

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MarkerClickActivity">
+
+    <TextView
+        android:id="@+id/lblDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="-:Place Details:-"
+        android:textColor="@color/black"
+        android:textSize="24dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtDetailsLat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lblDetails"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="8dp"
+        android:text="latitude : "
+        android:textColor="@color/teal_200"
+        android:textSize="18dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtDetailsLong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtDetailsLat"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="8dp"
+        android:text="Longitude : "
+        android:textColor="@color/teal_200"
+        android:textSize="18dp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/edtDetailsPlaceName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtDetailsLong"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="8dp"
+        android:enabled="false"
+        android:text="Place Name : "
+        android:textColor="@color/teal_200"
+        android:textSize="18dp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btnDeletePlace"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/edtDetailsPlaceName"
+        android:text="Delete Place" />
+
+    <Button
+        android:id="@+id/btnEditPlace"
+        android:layout_width="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/edtDetailsPlaceName"
+        android:text="Edit Place" />
+
+</RelativeLayout>
