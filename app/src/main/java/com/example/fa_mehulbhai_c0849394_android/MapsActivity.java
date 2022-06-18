@@ -1,51 +1,106 @@
 package com.example.fa_mehulbhai_c0849394_android;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.fa_mehulbhai_c0849394_android.databinding.ActivityMapsBinding;
 
+import java.util.HashSet;
+import java.util.List;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
+    private static final int REQUEST_CODE = 1;
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
+
+    Button addLocation,satelliteMap,hybridMap,terrainMap;
+
+    LocationListener locationListener;
+    LocationManager locationManager;
+    Marker marker;
+
+    DatabaseHelperClass databaseHelperClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_maps);
 
-        binding = ActivityMapsBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        addLocation = findViewById(R.id.btnAddLocation);
+        hybridMap = findViewById(R.id.btnHybridMap);
+        satelliteMap = findViewById(R.id.btnSatelliteMap);
+        terrainMap = findViewById(R.id.btnTerrainMap);
+
+        hybridMap.setOnClickListener(view -> mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID));
+
+        satelliteMap.setOnClickListener(view -> mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE));
+
+        terrainMap.setOnClickListener(view -> mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN));
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
+        databaseHelperClass = new DatabaseHelperClass(this);
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                MarkerOptions markerOptions = new MarkerOptions().position(latLng);
+                marker = mMap.addMarker(markerOptions);
+                addLocation.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Double lattitude = marker.getPosition().latitude;
+                        Double laongitude = marker.getPosition().longitude;
+                        Intent i = new Intent(MapsActivity.this, FavouritePlaceActivity.class);
+                        i.putExtra("lattitude",lattitude);
+                        i.putExtra("longitude",laongitude);
+                        startActivity(i);
+                    }
+                });
+            }
+        });
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (REQUEST_CODE == requestCode) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
+            }
+        }
+    }
+
+
 }
