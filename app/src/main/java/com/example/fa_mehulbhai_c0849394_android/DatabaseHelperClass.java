@@ -1,5 +1,6 @@
 package com.example.fa_mehulbhai_c0849394_android;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -35,6 +36,16 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(sqLiteDatabase);
+    }
+
+    public void addPlaceToDatabase(ModelClass modelClass) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(LATITUDE,modelClass.getPlaceLatitude());
+        cv.put(LONGITUDE,modelClass.getPlaceLongitude());
+        cv.put(TITLE,modelClass.getPlaceName());
+        sqLiteDatabase.insert(TABLE_NAME,null,cv);
+        sqLiteDatabase.close();
     }
 }
 
