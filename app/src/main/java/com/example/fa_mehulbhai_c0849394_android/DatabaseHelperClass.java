@@ -69,5 +69,26 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
         }
         return placeList;
     }
+
+    public void deletePlace(ModelClass modelClass){
+        SQLiteDatabase database = this.getWritableDatabase();
+        database.delete(TABLE_NAME,KEY_ID+ "=?",
+                new String[]{String.valueOf(modelClass.getId())});
+        database.close();
+    }
+
+    public int editPlace(ModelClass modelClass){
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(LATITUDE , modelClass.getPlaceLatitude());
+        contentValues.put(LONGITUDE , modelClass.getPlaceLongitude());
+        contentValues.put(TITLE , modelClass.getPlaceName());
+
+        int result =  database.update(TABLE_NAME, contentValues,
+                KEY_ID+ "=?",
+                new String[]{String.valueOf(modelClass.getId())});
+        database.close();
+        return result;
+    }
 }
 

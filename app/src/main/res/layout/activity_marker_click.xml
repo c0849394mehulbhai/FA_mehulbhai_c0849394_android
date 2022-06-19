@@ -26,7 +26,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/lblDetails"
         android:layout_centerHorizontal="true"
-        android:layout_margin="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="latitude : "
         android:textColor="@color/teal_200"
         android:textSize="18dp"
@@ -50,7 +53,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtDetailsLong"
         android:layout_centerHorizontal="true"
-        android:layout_margin="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:enabled="false"
         android:text="Place Name : "
         android:textColor="@color/teal_200"
@@ -60,7 +66,7 @@
     <Button
         android:id="@+id/btnDeletePlace"
         android:layout_width="wrap_content"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="15dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/edtDetailsPlaceName"
@@ -69,10 +75,20 @@
     <Button
         android:id="@+id/btnEditPlace"
         android:layout_width="wrap_content"
-        android:layout_marginEnd="40dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_below="@+id/edtDetailsPlaceName"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="15dp"
         android:text="Edit Place" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnApplyChanges"
+        android:text="Apply Changes"
+        android:layout_marginTop="8dp"
+        android:visibility="invisible"
+        android:layout_below="@id/btnDeletePlace"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

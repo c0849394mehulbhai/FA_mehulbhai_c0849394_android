@@ -42,6 +42,7 @@ public class FavouritePlaceActivity extends AppCompatActivity {
                         fvrtPlaceName.getText().toString()));
                 Intent i = new Intent(FavouritePlaceActivity.this,MapsActivity.class);
                 startActivity(i);
+                finish();
             }
         });
 

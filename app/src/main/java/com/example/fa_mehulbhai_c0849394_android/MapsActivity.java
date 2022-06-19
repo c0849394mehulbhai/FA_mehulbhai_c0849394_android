@@ -79,14 +79,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         markerList = new ArrayList<>();
         List<ModelClass> placeList = databaseHelperClass.getAllPlaces();
 
-//        for (ModelClass modelClass : placeList) {
-//            markerList.add(mMap.addMarker(new MarkerOptions()
-//                    .position(new LatLng(Double.parseDouble(modelClass.getPlaceLatitude())
-//                            ,Double.parseDouble(modelClass.getPlaceLongitude()))).title(modelClass.getPlaceName())
-//                    .zIndex( modelClass.getId() ).snippet("By ME")     ));
-//        }
-
         markerList.add(mMap.addMarker(new MarkerOptions().position(myPlace).title("Scarborough")));
+
+        for(Marker m : markerList){
+            // Add a marker in Sydney and move the camera
+            LatLng latLng = new LatLng(m.getPosition().latitude, m.getPosition().longitude);
+            mMap.addMarker(new MarkerOptions().position(latLng) );
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,12));
+        }
 
         for (Marker marker1 : markerList) {
             LatLng latLng =new LatLng(marker1.getPosition().latitude,marker1.getPosition().longitude);
@@ -117,6 +117,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
                 Intent i = new Intent(MapsActivity.this,MarkerClickActivity.class);
+                i.putExtra("latitude",marker.getPosition().latitude);
+                i.putExtra("longitude",marker.getPosition().longitude);
+                i.putExtra("placeName",marker.getTitle());
+                i.putExtra("id",marker.getZIndex());
                 startActivity(i);
                 return false;
             }
